@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  background-color: rgb(38, 38, 38);
+}
+.board {
+  width: 90%;
+  min-width: 350px;
+  max-width: 600px;
+  aspect-ratio: 1/1;
+  background-color: #001700a1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 0.12rem;
+  margin: 3rem auto;
+}
+.box {
+  background-color: rgb(0, 105, 0);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+/* .box > .pos {
+    position: absolute;
+    right: 0.2rem;
+    bottom: 0.2rem;
+    font-size: 0.6rem;
+    font-family: sans-serif;
+    font-weight: 800;
+    color: #001700;
+  } */
+.coin {
+  width: 75%;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.player1 > .coin {
+  background: linear-gradient(135deg, #383838f0, black);
+  /* border: 8px double #d4d4d4; */
+  box-shadow: #004500de 3px 3px 20px 3px;
+}
+.player2 > .coin {
+  background: linear-gradient(135deg, #fff, #858585);
+  /* border: 8px double #0f0f0f; */
+  box-shadow: #004500de 3px 3px 20px 3px;
+}
+
+.available > .coin {
+  width: 20%;
+  background: #00d000;
+  box-shadow: #00ea00 0px 0px 2px 3px;
+}
