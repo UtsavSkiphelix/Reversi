@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reversi</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        background-color: rgb(38, 38, 38);
+      }
+      .board {
+        width: 90%;
+        min-width: 350px;
+        max-width: 600px;
+        aspect-ratio: 1/1;
+        background-color: #001700a1;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        gap: 0.12rem;
+        margin: 3rem auto;
+      }
+      .box {
+        background-color: rgb(0, 105, 0);
+        display: grid;
+        place-items: center;
+        position: relative;
+      }
+      /* .box > .pos {
+        position: absolute;
+        right: 0.2rem;
+        bottom: 0.2rem;
+        font-size: 0.6rem;
+        font-family: sans-serif;
+        font-weight: 800;
+        color: #001700;
+      } */
+      .coin {
+        width: 75%;
+        border-radius: 50%;
+        aspect-ratio: 1;
+        pointer-events: none;
+      }
+      .player1 > .coin {
+        background: linear-gradient(135deg, #383838f0, black);
+        /* border: 8px double #d4d4d4; */
+        box-shadow: #004500de 3px 3px 20px 3px;
+      }
+      .player2 > .coin {
+        background: linear-gradient(135deg, #fff, #858585);
+        /* border: 8px double #0f0f0f; */
+        box-shadow: #004500de 3px 3px 20px 3px;
+      }
+
+      .available > .coin {
+        width: 20%;
+        background: #00d000;
+        box-shadow: #00ea00 0px 0px 2px 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <div class="box" id="11">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="12">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="13">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="14">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="15">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="16">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="17">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="18">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="21">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="22">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="23">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="24">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="25">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="26">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="27">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="28">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="31">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="32">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="33">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="34">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="35">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="36">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="37">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="38">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="41">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="42">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="43">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="44">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="45">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="46">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="47">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="48">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="51">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="52">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="53">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="54">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="55">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="56">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="57">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="58">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="61">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="62">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="63">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="64">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="65">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="66">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="67">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="68">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="71">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="72">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="73">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="74">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="75">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="76">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="77">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="78">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="81">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="82">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="83">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="84">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="85">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="86">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="87">
+        <div class="coin"></div>
+      </div>
+      <div class="box" id="88">
+        <div class="coin"></div>
+      </div>
+    </div>
+    <script>
+      const coins = document.querySelectorAll(".coin");
+      const coin = (a) => document.getElementById(a);
+      let PLAYING = "player1";
+      const switch_player = () => {
+        PLAYING = PLAYING === "player1" ? "player2" : "player1";
+      };
+      const count = (player) => {
+        const player_coins = document.querySelectorAll("." + player);
+        let coins = [];
+        player_coins.forEach((box) => {
+          coins.push(box.getAttribute("id"));
+        });
+        return coins;
+      };
+      let MOVES = 0;
+      let GAME_LOG = {};
+      // const boxes = document.querySelectorAll(".box");
+      // boxes.forEach((box) => {
+      //   let id = box.getAttribute("id");
+      //   box.innerHTML = '<div class="coin"></div><p class="pos">' + id + "</p>";
+      // });
+
+      const availableMoves = (player) => {
+        const players_coins = document.querySelectorAll("." + player);
+        let opp_coin = player === "player1" ? "player2" : "player1";
+        let available_moves = [];
+
+        players_coins.forEach((player_coin) => {
+          let pos = player_coin.getAttribute("id");
+
+          // Here We Are using a loop to check available position for a coin in all Eight directions
+
+          // Down
+          let flag = 0;
+          for (let i = parseInt(pos[0]) + 1; i < 9; i++) {
+            let temp_pos = i + pos[1];
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+              continue;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+          }
+
+          // Up
+          flag = 0;
+          for (let i = parseInt(pos[0]) - 1; i > 0; i--) {
+            let temp_pos = i + pos[1];
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+              continue;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+          }
+
+          // Right
+          flag = 0;
+          for (let i = parseInt(pos[1]) + 1; i < 9; i++) {
+            let temp_pos = pos[0] + i;
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+              continue;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+          }
+
+          // Left
+          flag = 0;
+          for (let i = parseInt(pos[1]) - 1; i > 0; i--) {
+            let temp_pos = pos[0] + i;
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+          }
+
+          // Lower-Right
+          flag = 0;
+          let i = parseInt(pos[0]) + 1;
+          let j = parseInt(pos[1]) + 1;
+          while (i < 9 && j < 9) {
+            let temp_pos = String(i) + String(j);
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+            i++;
+            j++;
+          }
+
+          // Upper-Right
+          flag = 0;
+          i = parseInt(pos[0]) - 1;
+          j = parseInt(pos[1]) + 1;
+          while (i > 0 && j < 9) {
+            let temp_pos = String(i) + String(j);
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+            i--;
+            j++;
+          }
+
+          // Lower-Left
+          flag = 0;
+          i = parseInt(pos[0]) + 1;
+          j = parseInt(pos[1]) - 1;
+          while (i < 9 && j > 0) {
+            let temp_pos = String(i) + String(j);
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+            i++;
+            j--;
+          }
+
+          // Upper-Left
+          flag = 0;
+          i = parseInt(pos[0]) - 1;
+          j = parseInt(pos[1]) - 1;
+          while (i > 0 && j > 0) {
+            let temp_pos = String(i) + String(j);
+            if (
+              document.getElementById(temp_pos).classList.contains(opp_coin)
+            ) {
+              flag = 1;
+            } else {
+              if (
+                flag === 1 &&
+                !available_moves.includes(temp_pos) &&
+                !document.getElementById(temp_pos).classList.contains(player)
+              ) {
+                available_moves.push(temp_pos);
+              }
+              break;
+            }
+            i--;
+            j--;
+          }
+        });
+
+        return available_moves;
+      };
+
+      const move = (player) => {
+        if (availableMoves(player).length !== 0) {
+          const moves = availableMoves(player);
+
+          const turn = (current_move) => {
+            let opp_coin = player === "player1" ? "player2" : "player1";
+            let turning_coins = [];
+            // down
+            let flag = 0;
+            let temp_moves = [];
+            for (let i = parseInt(current_move[0]) + 1; i < 9; i++) {
+              const pos = i + current_move[1];
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+                continue;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+            }
+
+            // up
+            flag = 0;
+            temp_moves = [];
+            for (let i = parseInt(current_move[0]) - 1; i > 0; i--) {
+              const pos = i + current_move[1];
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+            }
+
+            // right
+            flag = 0;
+            temp_moves = [];
+            for (let i = parseInt(current_move[1]) + 1; i < 9; i++) {
+              const pos = current_move[0] + i;
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+            }
+
+            // left
+            flag = 0;
+            temp_moves = [];
+            for (let i = parseInt(current_move[1]) - 1; i > 0; i--) {
+              const pos = current_move[0] + i;
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+            }
+
+            // Lower-Right
+            flag = 0;
+            temp_moves = [];
+            let i = parseInt(current_move[0]) + 1;
+            let j = parseInt(current_move[1]) + 1;
+            while (i < 9 && j < 9) {
+              let pos = String(i) + String(j);
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+              i++;
+              j++;
+            }
+
+            // Upper-Right
+            flag = 0;
+            temp_moves = [];
+            i = parseInt(current_move[0]) - 1;
+            j = parseInt(current_move[1]) + 1;
+            while (i > 0 && j < 9) {
+              let pos = String(i) + String(j);
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+              i--;
+              j++;
+            }
+
+            // Lower-Left
+            flag = 0;
+            temp_moves = [];
+            i = parseInt(current_move[0]) + 1;
+            j = parseInt(current_move[1]) - 1;
+            while (i < 9 && j > 0) {
+              let pos = String(i) + String(j);
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+              i++;
+              j--;
+            }
+
+            // Upper-Left
+            flag = 0;
+            temp_moves = [];
+            i = parseInt(current_move[0]) - 1;
+            j = parseInt(current_move[1]) - 1;
+            while (i > 0 && j > 0) {
+              let pos = String(i) + String(j);
+              if (document.getElementById(pos).classList.contains(opp_coin)) {
+                temp_moves.push(pos);
+                flag = 1;
+              } else {
+                if (
+                  document.getElementById(pos).classList.contains(player) &&
+                  flag === 1
+                ) {
+                  turning_coins = turning_coins.concat(temp_moves);
+                }
+                break;
+              }
+              i--;
+              j--;
+            }
+
+            turning_coins.forEach((cord) => {
+              let box = document.getElementById(cord);
+              box.classList.toggle(player);
+              box.classList.toggle(opp_coin);
+            });
+          };
+          const put = (e) => {
+            e.srcElement.classList.add(player);
+            e.srcElement.classList.remove("available");
+            moves.forEach((cord) => {
+              let box = document.getElementById(cord);
+              box.removeEventListener("click", put);
+              box.classList.remove("available");
+            });
+            turn(e.srcElement.getAttribute("id"));
+            MOVES++;
+            GAME_LOG[MOVES] = {
+              player: player,
+              player1: count("player1"),
+              player2: count("player2"),
+            };
+
+            switch_player();
+            move(PLAYING);
+          };
+          moves.forEach((cord) => {
+            let box = document.getElementById(cord);
+            box.classList.add("available");
+            box.addEventListener("click", put);
+          });
+        }
+      };
+
+      const start = () => {
+        coin("44").classList.add("player2");
+        coin("45").classList.add("player1");
+        coin("54").classList.add("player1");
+        coin("55").classList.add("player2");
+        move(PLAYING);
+      };
+
+      start();
+    </script>
+  </body>
+</html>
