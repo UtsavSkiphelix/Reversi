@@ -43,6 +43,7 @@ body {
   border-radius: 50%;
   aspect-ratio: 1;
   pointer-events: none;
+  transition: all 0.3s ease-in-out;
 }
 .player1 > .coin {
   background: linear-gradient(135deg, #383838f0, black);
@@ -59,4 +60,5 @@ body {
   width: 20%;
   background: #00d000;
   box-shadow: #00ea00 0px 0px 2px 3px;
+  transition: none;
 }
