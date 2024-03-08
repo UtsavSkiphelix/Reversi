@@ -45,12 +45,12 @@ body {
   pointer-events: none;
 }
 .black > .coin {
-  background: linear-gradient(135deg, #383838f0, black);
+  background: linear-gradient(135deg, #2c2c2cf0, #151515);
   /* border: 8px double #d4d4d4; */
   box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
 .white > .coin {
-  background: linear-gradient(135deg, #fff, #858585);
+  background: linear-gradient(135deg, #ededed, #858585);
   /* border: 8px double #0f0f0f; */
   box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
