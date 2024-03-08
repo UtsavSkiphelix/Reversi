@@ -1,8 +1,8 @@
 const coins = document.querySelectorAll(".coin");
 const coin = (a) => document.getElementById(a);
-let PLAYING = "player1";
+let PLAYING = "black";
 const switch_player = () => {
-  PLAYING = PLAYING === "player1" ? "player2" : "player1";
+  PLAYING = PLAYING === "black" ? "white" : "black";
 };
 const count = (player) => {
   const player_coins = document.querySelectorAll("." + player);
@@ -12,8 +12,15 @@ const count = (player) => {
   });
   return coins;
 };
-let MOVES = 0;
-let GAME_LOG = {};
+let MOVED = 0;
+let GAME_LOG = {
+  MOVES: 0,
+  0: {
+    next_turn: "black",
+    black: ["44", "55"],
+    white: ["45", "54"],
+  },
+};
 // const boxes = document.querySelectorAll(".box");
 // boxes.forEach((box) => {
 //   let id = box.getAttribute("id");
@@ -22,7 +29,7 @@ let GAME_LOG = {};
 
 const availableMoves = (player) => {
   const players_coins = document.querySelectorAll("." + player);
-  let opp_coin = player === "player1" ? "player2" : "player1";
+  let opp_coin = player === "black" ? "white" : "black";
   let available_moves = [];
 
   players_coins.forEach((player_coin) => {
@@ -202,7 +209,7 @@ const move = (player) => {
     const moves = availableMoves(player);
 
     const turn = (current_move) => {
-      let opp_coin = player === "player1" ? "player2" : "player1";
+      let opp_coin = player === "black" ? "white" : "black";
       let turning_coins = [];
       // down
       let flag = 0;
@@ -377,24 +384,31 @@ const move = (player) => {
         let box = document.getElementById(cord);
         box.classList.toggle(player);
         box.classList.toggle(opp_coin);
+        if (box.classList.contains("turning_" + opp_coin)) {
+          box.classList.remove("turning_" + opp_coin);
+        }
+        box.classList.add("turning_" + player);
       });
     };
     const put = (e) => {
-      e.srcElement.classList.add(player);
-      e.srcElement.classList.remove("available");
+      placed_coin = e.srcElement;
+      placed_coin.classList.add(player);
+      placed_coin.classList.remove("available");
       moves.forEach((cord) => {
         let box = document.getElementById(cord);
         box.removeEventListener("click", put);
         box.classList.remove("available");
       });
       turn(e.srcElement.getAttribute("id"));
-      MOVES++;
-      GAME_LOG[MOVES] = {
-        player: player,
-        player1: count("player1"),
-        player2: count("player2"),
-      };
+      MOVED++;
       switch_player();
+      GAME_LOG[MOVED] = {
+        next_turn: PLAYING,
+        coin_position: placed_coin.getAttribute("id"),
+        black: count("black"),
+        white: count("white"),
+      };
+      console.log(GAME_LOG[MOVED]);
       move(PLAYING);
     };
     moves.forEach((cord) => {
@@ -405,12 +419,46 @@ const move = (player) => {
   }
 };
 
-const start = () => {
-  coin("44").classList.add("player2");
-  coin("45").classList.add("player1");
-  coin("54").classList.add("player1");
-  coin("55").classList.add("player2");
+const load_game = (game_log, MOVE) => {
+  let game_position = game_log[MOVE];
+  game_log["MOVES"] = MOVE;
+  PLAYING = game_position["next_turn"];
+  document.querySelectorAll(".black").forEach((coin) => {
+    coin.classList.remove("black");
+  });
+  document.querySelectorAll(".white").forEach((coin) => {
+    coin.classList.remove("white");
+  });
+  document.querySelectorAll(".turning_black").forEach((coin) => {
+    coin.classList.remove("turning_black");
+  });
+  document.querySelectorAll(".turning_white").forEach((coin) => {
+    coin.classList.remove("turning_white");
+  });
+  document.querySelectorAll(".available").forEach((coin) => {
+    coin.classList.remove("available");
+  });
+
+  const black_coins = game_position["black"];
+  const white_coins = game_position["white"];
+  black_coins.forEach((cord) => {
+    document.getElementById(cord).classList.add("black");
+  });
+  white_coins.forEach((cord) => {
+    document.getElementById(cord).classList.add("white");
+  });
   move(PLAYING);
+};
+
+const undo = (moves) => {
+  delete GAME_LOG[moves];
+  MOVED = moves - 1;
+  load_game(GAME_LOG, MOVED);
+  console.log(GAME_LOG);
+};
+
+const start = () => {
+  load_game(GAME_LOG, GAME_LOG["MOVES"]);
 };
 
 start();
