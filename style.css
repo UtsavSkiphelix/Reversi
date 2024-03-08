@@ -24,7 +24,7 @@ body {
   margin-top: 5%;
 }
 .box {
-  background-color: #006900;
+  background-color: #679f37;
   display: grid;
   place-items: center;
   position: relative;
@@ -47,12 +47,12 @@ body {
 .black > .coin {
   background: linear-gradient(135deg, #383838f0, black);
   /* border: 8px double #d4d4d4; */
-  box-shadow: #004500de 3px 3px 20px 3px;
+  box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
 .white > .coin {
   background: linear-gradient(135deg, #fff, #858585);
   /* border: 8px double #0f0f0f; */
-  box-shadow: #004500de 3px 3px 20px 3px;
+  box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
 
 .turning_black > .coin {
