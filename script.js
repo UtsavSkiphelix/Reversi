@@ -12,7 +12,6 @@ const count = (player) => {
   });
   return coins;
 };
-let MOVED = 0;
 let GAME_LOG = {
   MOVES: 0,
   0: {
@@ -21,6 +20,12 @@ let GAME_LOG = {
     white: ["45", "54"],
   },
 };
+let MOVED = 0;
+if (localStorage.GAME_LOG) {
+  GAME_LOG = JSON.parse(localStorage.getItem("GAME_LOG"));
+} else {
+  localStorage.setItem("GAME_LOG", JSON.stringify(GAME_LOG));
+}
 // const boxes = document.querySelectorAll(".box");
 // boxes.forEach((box) => {
 //   let id = box.getAttribute("id");
@@ -207,7 +212,6 @@ const availableMoves = (player) => {
 const move = (player) => {
   if (availableMoves(player).length !== 0) {
     const moves = availableMoves(player);
-
     const turn = (current_move) => {
       let opp_coin = player === "black" ? "white" : "black";
       let turning_coins = [];
@@ -408,7 +412,8 @@ const move = (player) => {
         black: count("black"),
         white: count("white"),
       };
-      console.log(GAME_LOG[MOVED]);
+      GAME_LOG["MOVES"] = MOVED;
+      localStorage.GAME_LOG = JSON.stringify(GAME_LOG);
       move(PLAYING);
     };
     moves.forEach((cord) => {
@@ -416,12 +421,25 @@ const move = (player) => {
       box.classList.add("available");
       box.addEventListener("click", put);
     });
+  } else {
+    switch_player();
+    if (availableMoves(PLAYING).length !== 0) {
+      move(PLAYING);
+    } else {
+      let winner =
+        GAME_LOG[GAME_LOG["MOVES"]]["black"].length >=
+        GAME_LOG[GAME_LOG["MOVES"]]["white"].length
+          ? "black"
+          : "white";
+      console.log(winner);
+    }
   }
 };
 
 const load_game = (game_log, MOVE) => {
   let game_position = game_log[MOVE];
   game_log["MOVES"] = MOVE;
+  localStorage.GAME_LOG = JSON.stringify(game_log);
   PLAYING = game_position["next_turn"];
   document.querySelectorAll(".black").forEach((coin) => {
     coin.classList.remove("black");
@@ -451,14 +469,31 @@ const load_game = (game_log, MOVE) => {
 };
 
 const undo = (moves) => {
-  delete GAME_LOG[moves];
-  MOVED = moves - 1;
-  load_game(GAME_LOG, MOVED);
-  console.log(GAME_LOG);
+  if (moves > 0) {
+    delete GAME_LOG[moves];
+    MOVED = moves - 1;
+    load_game(GAME_LOG, MOVED);
+  }
 };
 
 const start = () => {
   load_game(GAME_LOG, GAME_LOG["MOVES"]);
 };
 
+const restart = () => {
+  localStorage.GAME_LOG = JSON.stringify({
+    MOVES: 0,
+    0: {
+      next_turn: "black",
+      black: ["44", "55"],
+      white: ["45", "54"],
+    },
+  });
+  GAME_LOG = JSON.parse(localStorage.GAME_LOG);
+  load_game(GAME_LOG, GAME_LOG["MOVES"]);
+};
+
+const copy_game = () => {
+  alert(localStorage.GAME_LOG);
+};
 start();

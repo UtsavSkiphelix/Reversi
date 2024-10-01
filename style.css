@@ -4,24 +4,50 @@
   box-sizing: border-box;
 }
 body {
-  height: 100%;
-  min-height: 80vh;
+  height: 100vh;
   width: 100%;
-  background-color: rgb(38, 38, 38);
+  background-color: #302e2b;
   display: grid;
-  place-items: center;
+  align-items: center;
+  max-width: 1024px;
+  margin: 0 auto;
 }
+
 .board {
-  width: 95%;
-  min-width: 350px;
-  max-width: 600px;
   aspect-ratio: 1/1;
   background-color: #001700a1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.12rem;
-  margin-top: 5%;
+  gap: 0.15rem;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem;
+  justify-self: center;
+  align-self: center;
+  grid-row: 1/-1;
+}
+@media (orientation: landscape) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8, 1fr);
+  }
+  .board {
+    height: 100%;
+    min-height: 350px;
+    max-height: 630px;
+    order: 1;
+  }
+}
+@media (orientation: portrait) {
+  .board {
+    width: 90%;
+    min-width: 350px;
+    order: 2;
+  }
+  .heading {
+    order: 1;
+  }
 }
 .box {
   background-color: #679f37;
@@ -39,18 +65,18 @@ body {
     color: #001700;
   } */
 .coin {
-  width: 75%;
+  width: 80%;
   border-radius: 50%;
   aspect-ratio: 1;
   pointer-events: none;
 }
 .black > .coin {
-  background: linear-gradient(135deg, #2c2c2cf0, #151515);
+  background: linear-gradient(135deg, #383838f0, #000000);
   /* border: 8px double #d4d4d4; */
   box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
 .white > .coin {
-  background: linear-gradient(135deg, #ededed, #858585);
+  background: linear-gradient(135deg, #ffffff, #858585);
   /* border: 8px double #0f0f0f; */
   box-shadow: #4f792ab8 0px 0px 20px 5px;
 }
@@ -63,9 +89,11 @@ body {
 }
 
 .available > .coin {
-  width: 20%;
-  background: #cfcfcf5f;
-  box-shadow: #e9e9e994 inset 0px 0px 3px 2px;
+  width: 30%;
+  min-width: none;
+  max-width: 20px;
+  background: #cfcfcf88;
+  box-shadow: #e9e9e9a0 inset 0px 0px 3px 2px;
   transition: none;
 }
 
